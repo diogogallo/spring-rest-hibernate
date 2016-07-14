@@ -1,0 +1,44 @@
+########################################################################################################################
+# Example:
+########################################################################################################################
+#web:
+#  build: .
+#  ports:
+#   - "5000:5000"
+#  volumes:
+#   - .:/code
+#  links:
+#   - redis
+#redis:
+#  image: redis
+#
+#
+# -> To execute:
+# $ docker-compose --x-networking up
+# or
+# $ docker-compose --x-networking start
+########################################################################################################################
+
+# There is a separate volume container that's used to store the database data.
+# This helps ensure that the data persists even if the Postgres container is completely destroyed.
+data:
+#  restart: always
+  image: postgres:9.5
+  volumes:
+    - /var/lib/postgresql
+  command: 'true'
+
+postgres:
+#  restart: always
+  image: postgres:9.5
+  volumes_from:
+    - data
+  ports:
+    - "5433:5433"
+
+sandbox:
+  image: sandbox
+  ports:
+    - "9025:9025"
+  environment:
+    SPRING_APPLICATION_NAME: sandbox

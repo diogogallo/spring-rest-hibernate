@@ -18,7 +18,7 @@ public class Topic {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "topic_id")
     private Set<Question> questions;
 
